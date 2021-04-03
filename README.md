@@ -14,5 +14,5 @@ Commands:
 
 ```
 
-## Exampele
+## Example
 `node meme.js make "drake" "Making mememes on the web" "using the command line to dodge ads"`
