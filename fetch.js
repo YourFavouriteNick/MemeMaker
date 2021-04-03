@@ -12,6 +12,12 @@ exports.handler = () => {
 		.get(getUrl)
 		.then((response) => {
 			if (response.data.success === true) {
+				const memeNames = response.data.data.memes.map((meme, index) => {
+					return `${index+1}. ${meme.name}`
+				})
+
+				console.log(memeNames)
+				
 				fs.writeFile(
 					__dirname + '/templates.json',
 					JSON.stringify(response.data),

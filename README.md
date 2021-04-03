@@ -2,8 +2,18 @@
 
 ## a super simple commandline tool for generating memes using the imgflip API
 
+# Installation
+
+From the root directory of this repo
+
+```
+npm i
+```
+
+**Update auth credentials** in `make.js`. It takes a username/password for _imgflip_.
 
 # usage
+
 ```meme.js [command]
 
 Commands:
@@ -15,4 +25,5 @@ Commands:
 ```
 
 ## Example
-`node meme.js make "drake" "Making mememes on the web" "using the command line to dodge ads"`
+
+`node meme.js create "drake" "Making mememes on the web" "using the command line to dodge ads"`
