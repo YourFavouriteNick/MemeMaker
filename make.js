@@ -72,7 +72,7 @@ exports.makeRequest = (templateObject, auth, ...texts) => {
 		.then((response) => {
 			if (response.data.success) {
 				console.log(success('Brace yorselves, the memes are coming'));
-				if (process.env.SHOULD_SAVE === 'true') {
+				if (process.env.SHOULD_DOWNLOAD === 'true') {
 					saveMeme(templateObject, response.data.data.url);
 				} else {
 					console.log(response.data);
