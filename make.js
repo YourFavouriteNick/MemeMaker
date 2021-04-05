@@ -46,9 +46,9 @@ exports.handler = (argv) => {
 	this.makeRequest(matchingMemes[0], auth, ...argv.text);
 };
 
-exports.makeRequest = (memeObject, auth, ...texts) => {
+exports.makeRequest = (templateObject, auth, ...texts) => {
 	let post = {
-		template_id: memeObject.id,
+		template_id: templateObject.id,
 		username: auth.username,
 		password: auth.password,
 	};
@@ -70,10 +70,16 @@ exports.makeRequest = (memeObject, auth, ...texts) => {
 		})
 
 		.then((response) => {
-			response.data.success
-				? console.log(success('Brace yourselves, the memes are coming'))
-				: console.log(error('Your request has no power here'));
-			console.log(response.data);
+			if (response.data.success) {
+				console.log(success('Brace yorselves, the memes are coming'));
+				if (process.env.SHOULD_SAVE === 'true') {
+					saveMeme(templateObject, response.data.data.url);
+				} else {
+					console.log(response.data);
+				}
+			} else {
+				console.log(error(response.data));
+			}
 		})
 		.catch((error) => {
 			console.log(error);
@@ -86,4 +92,36 @@ function buildBoxes(...texts) {
 			text: thisText,
 		};
 	});
+}
+
+async function saveMeme(templateObject, imgUrl) {
+	if (!fs.existsSync(__dirname + '/Downloads')) {
+		fs.mkdir(__dirname + '/Downloads', { recursive: false }, (err) => {
+			console.log(error(err));
+			return;
+		});
+	}
+	const fileName = getFileName(templateObject);
+
+	await downloadImage(imgUrl, fileName);
+	console.log(success('saved to', fileName));
+}
+
+function getFileName(templateObject) {
+	const time = new Date().getTime().toString();
+	const templateName = templateObject.name.split(' ').join('_');
+
+	return __dirname + '/Downloads/' + templateName + '_' + time + '.jpg';
+}
+
+async function downloadImage(url, saveLocation) {
+	const writer = fs.createWriteStream(saveLocation);
+
+	const response = await axios({
+		url,
+		method: 'GET',
+		responseType: 'stream',
+	});
+
+	await response.data.pipe(writer);
 }
