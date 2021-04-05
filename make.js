@@ -9,8 +9,8 @@ const info = chalk.bold.blue;
 
 const postUrl = 'https://api.imgflip.com/caption_image';
 const auth = {
-	username: '',
-	password: '',
+	username: process.env.IMGFLIP_USERNAME,
+	password: process.env.IMGFLIP_PASSWORD,
 };
 
 exports.command = 'create <template> <text...>';
@@ -70,13 +70,10 @@ exports.makeRequest = (memeObject, auth, ...texts) => {
 		})
 
 		.then((response) => {
-			if (response.data.success === true) {
-				console.log(success('Brace yourselves, the memes are coming'));
-				console.log(response.data);
-			} else {
-				console.log(error('Your request has no power here'));
-				console.log(response);
-			}
+			response.data.success
+				? console.log(success('Brace yourselves, the memes are coming'))
+				: console.log(error('Your request has no power here'));
+			console.log(response.data);
 		})
 		.catch((error) => {
 			console.log(error);

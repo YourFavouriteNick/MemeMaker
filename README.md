@@ -10,7 +10,7 @@ From the root directory of this repo
 npm i
 ```
 
-**Update auth credentials** in `make.js`. It takes a username/password for _imgflip_.
+**Update auth credentials** move .env.example to .env and add your _imgflip_ username/password there.
 
 # usage
 
